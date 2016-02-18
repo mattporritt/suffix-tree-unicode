@@ -1,6 +1,6 @@
 /* Python suffix tree */
 
-/* Originally developed by Thomas Mailund <mailund@birc.dk> and Søren Besenbacher <besen@birc.dk> */
+/* Originally developed by Thomas Mailund <mailund@birc.dk> and Sï¿½ren Besenbacher <besen@birc.dk> */
 /* Adapted by Dell Zhang <dell.z@ieee.org> to support Unicode text and new verision Python. */
 
 #include <wchar.h>
@@ -84,7 +84,7 @@ static PyGetSetDef SuffixTree_getseters[] =	{
 
 /* FIXME: deallocation of this guy!	*/
 static PyTypeObject	SuffixTreeType = {
-	PyObject_HEAD_INIT(NULL)
+	PyVarObject_HEAD_INIT(NULL, 0)
 	0,						   /*ob_size*/
 	"_suffix_tree.SuffixTree", /*tp_name*/
 	sizeof(SuffixTreeObject),  /*tp_basicsize*/
@@ -190,7 +190,7 @@ static PyGetSetDef Node_getseters[]	= {
 };
 
 static PyTypeObject	NodeType = {
-	PyObject_HEAD_INIT(NULL)
+	PyVarObject_HEAD_INIT(NULL, 0)
 	0,						   /*ob_size*/
 	"_suffix_tree.SuffixTreeNode", /*tp_name*/
 	sizeof(NodeObject),		   /*tp_basicsize*/
@@ -199,7 +199,7 @@ static PyTypeObject	NodeType = {
 	0,						   /*tp_print*/
 	0,						   /*tp_getattr*/
 	0,						   /*tp_setattr*/
-	(cmpfunc)Node_compare,	   /*tp_compare*/
+	Node_compare,	   /*tp_compare*/
 	0,						   /*tp_repr*/
 	0,						   /*tp_as_number*/
 	0,						   /*tp_as_sequence*/
@@ -238,8 +238,21 @@ static PyMethodDef _suffix_tree_methods[] =	{
 #ifndef	PyMODINIT_FUNC	/* declarations	for	DLL	import/export */
 #define	PyMODINIT_FUNC void
 #endif
+
+static struct PyModuleDef moduledef = {
+    PyModuleDef_HEAD_INIT,
+    "_suffix_tree", /* m_name */
+    "Wrapper module for suffix trees.",      /* m_doc */
+    -1,                  /* m_size */
+    _suffix_tree_methods,    /* m_methods */
+    NULL,                /* m_reload */
+    NULL,                /* m_traverse */
+    NULL,                /* m_clear */
+    NULL,                /* m_free */
+  };
+
 PyMODINIT_FUNC
-init_suffix_tree(void) 
+PyInit__suffix_tree(void) 
 {
 	PyObject *m;
 
@@ -248,8 +261,7 @@ init_suffix_tree(void)
 	if (PyType_Ready(&NodeType)	< 0) 
 		return;
 
-	m =	Py_InitModule3("_suffix_tree", _suffix_tree_methods,
-					   "Wrapper module for suffix trees.");
+    m = PyModule_Create(&moduledef);
 
     if (m == NULL)
 		return;
@@ -389,7 +401,7 @@ static void
 Node_dealloc(NodeObject	*self)
 {
 	Node_clear(self);
-	self->ob_type->tp_free((PyObject*)self);
+	Py_TYPE(self)->tp_free((PyObject*)self);
 }
 
 static int
