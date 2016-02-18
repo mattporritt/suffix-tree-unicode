@@ -83,46 +83,47 @@ static PyGetSetDef SuffixTree_getseters[] =	{
 };
 
 /* FIXME: deallocation of this guy!	*/
+
 static PyTypeObject	SuffixTreeType = {
 	PyVarObject_HEAD_INIT(NULL, 0)
-	0,						   /*ob_size*/
-	"_suffix_tree.SuffixTree", /*tp_name*/
-	sizeof(SuffixTreeObject),  /*tp_basicsize*/
-	0,						   /*tp_itemsize*/
-	0,						   /*tp_dealloc*/
-	0,						   /*tp_print*/
-	0,						   /*tp_getattr*/
-	0,						   /*tp_setattr*/
-	0,						   /*tp_compare*/
-	0,						   /*tp_repr*/
-	0,						   /*tp_as_number*/
-	0,						   /*tp_as_sequence*/
-	0,						   /*tp_as_mapping*/
-	0,						   /*tp_hash */
-	0,						   /*tp_call*/
-	0,						   /*tp_str*/
-	0,						   /*tp_getattro*/
-	0,						   /*tp_setattro*/
-	0,						   /*tp_as_buffer*/
-	Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,  /*tp_flags*/
-	"Suffix	tree object",	   /* tp_doc */
-	0,						   /* tp_traverse */
-	0,						   /* tp_clear */
-	0,						   /* tp_richcompare */
-	0,						   /* tp_weaklistoffset	*/
-	0,						   /* tp_iter */
-	0,						   /* tp_iternext */
-	0,						   /* tp_methods */
-	0,						   /* tp_members */
-	SuffixTree_getseters,	   /* tp_getset	*/
-	0,						   /* tp_base */
-	0,						   /* tp_dict */
-	0,						   /* tp_descr_get */
-	0,						   /* tp_descr_set */
-	0,						   /* tp_dictoffset	*/
-	(initproc)SuffixTree_init, /* tp_init */
-	0,						   /* tp_alloc */
-	SuffixTree_new,			   /* tp_new */
+	"_suffix_tree.SuffixTree", /* tp_name */
+    sizeof(SuffixTreeObject), /* tp_basicsize */
+    0,                         /* tp_itemsize */
+    0,                         /* tp_dealloc */
+    0,                         /* tp_print */
+    0,                         /* tp_getattr */
+    0,                         /* tp_setattr */
+    0,                         /* tp_reserved */
+    0,                         /* tp_repr */
+    0,                         /* tp_as_number */
+    0,                         /* tp_as_sequence */
+    0,                         /* tp_as_mapping */
+    0,                         /* tp_hash  */
+    0,                         /* tp_call */
+    0,                         /* tp_str */
+    0,                         /* tp_getattro */
+    0,                         /* tp_setattro */
+    0,                         /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,        /* tp_flags */
+    "Suffix tree object",          /* tp_doc */
+	0,                        /* tp_traverse */
+    0,                         /* tp_clear */
+    0,                         /* tp_richcompare */
+    0,                         /* tp_weaklistoffset */
+    0,                         /* tp_iter */
+    0,                         /* tp_iternext */
+    0,                         /* tp_methods */
+    0,                         /* tp_members */
+    SuffixTree_getseters,      /* tp_getset */
+    0,                         /* tp_base */
+    0,                         /* tp_dict */
+    0,                         /* tp_descr_get */
+    0,                         /* tp_descr_set */
+    0,                         /* tp_dictoffset */
+    (initproc)SuffixTree_init, /* tp_init */
+    0,                         /* tp_alloc */
+    SuffixTree_new,            /* tp_new */
+
 };
 
 static PyGetSetDef Node_getseters[]	= {
@@ -257,14 +258,14 @@ PyInit__suffix_tree(void)
 	PyObject *m;
 
 	if (PyType_Ready(&SuffixTreeType) <	0) 
-		return;
+		return NULL;
 	if (PyType_Ready(&NodeType)	< 0) 
-		return;
+		return NULL;
 
     m = PyModule_Create(&moduledef);
 
     if (m == NULL)
-		return;
+		return NULL;
 
 	Py_INCREF(&SuffixTreeType);
 	Py_INCREF(&NodeType);
@@ -416,31 +417,28 @@ Node_hash(NodeObject *self)
 	return (long)(self->node);
 }
 
-
-
-
 static PyObject	*
 Node_start(NodeObject *self)
 {
-	return PyInt_FromLong(self->node->start);
+	return PyLong_FromLong(self->node->start);
 }
 
 static PyObject	*
 Node_end(NodeObject	*self)
 {
-	return PyInt_FromLong(self->node->end);
+	return PyLong_FromLong(self->node->end);
 }
 
 static PyObject	*
 Node_index(NodeObject *self)
 {
-	return PyInt_FromLong(self->node->term_number);
+	return PyLong_FromLong(self->node->term_number);
 }
 
 static PyObject	*
 Node_string_depth(NodeObject *self)
 {
-	return PyInt_FromLong(self->node->depth);
+	return PyLong_FromLong(self->node->depth);
 }
 
 
