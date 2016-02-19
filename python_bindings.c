@@ -1,6 +1,6 @@
 /* Python suffix tree */
 
-/* Originally developed by Thomas Mailund <mailund@birc.dk> and Søren Besenbacher <besen@birc.dk> */
+/* Originally developed by Thomas Mailund <mailund@birc.dk> and Sï¿½ren Besenbacher <besen@birc.dk> */
 /* Adapted by Dell Zhang <dell.z@ieee.org> to support Unicode text and new verision Python. */
 
 #include <wchar.h>
@@ -283,7 +283,7 @@ SuffixTree_init(SuffixTreeObject *self,	PyObject *args,	PyObject *kwds)
 	static char *kwlist[] =	{"string", "terminal", NULL};
 
 	static wchar_t* s;
-	static wchar_t t[1];
+	static wchar_t t[2];
 	int	n;
 	Py_ssize_t input_string_size;
 
@@ -294,7 +294,7 @@ SuffixTree_init(SuffixTreeObject *self,	PyObject *args,	PyObject *kwds)
 
 	if (!(string = (PyUnicodeObject *) PyTuple_GetItem(args,0)))	  return -1; /*	rethrow	*/
 	if (!(terminal = (PyUnicodeObject *) PyTuple_GetItem(args,1)))	  return -1; /*	rethrow	*/
-	input_string_size = PyUnicode_GetSize(string);
+	input_string_size = PyUnicode_GetSize((PyObject *)string);
 	s = malloc((input_string_size + 1) * sizeof(wchar_t));
 	if ((n = PyUnicode_AsWideChar(string,s,input_string_size)) < 0)   return -1; /*	rethrow	*/
 	/* n is	actually ignored here -- the size of string	s is wcslen(s) */

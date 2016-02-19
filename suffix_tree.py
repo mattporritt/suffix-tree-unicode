@@ -121,7 +121,7 @@ sequences.'''
         for i in xrange(len(self.startPositions)-1):
             if self.startPositions[i] <= idx < self.startPositions[i+1]:
                 return (i,idx-self.startPositions[i])
-        raise IndexError, "Index out of range: "+str(idx)
+        raise IndexError ("Index out of range: "+str(idx))
 
     def _annotateNodes(self):
         for n in self.postOrderNodes:
