@@ -1,6 +1,6 @@
 /* Python suffix tree */
 
-/* Originally developed by Thomas Mailund <mailund@birc.dk> and Søren Besenbacher <besen@birc.dk> */
+/* Originally developed by Thomas Mailund <mailund@birc.dk> and Sï¿½ren Besenbacher <besen@birc.dk> */
 /* Adapted by Dell Zhang <dell.z@ieee.org> to support Unicode text and new verision Python. */
 
 #include <wchar.h>
@@ -121,7 +121,7 @@ static node_t *
 fastScan(suffix_tree_t *tree, node_t *n, int start,	int	end)
 {
 	int	x =	start;
-	node_t *ln;
+	node_t *ln = malloc(sizeof(*ln));
 
 	if (start >	end) return	n;
 

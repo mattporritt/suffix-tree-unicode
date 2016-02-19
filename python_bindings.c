@@ -192,7 +192,6 @@ static PyGetSetDef Node_getseters[]	= {
 
 static PyTypeObject	NodeType = {
 	PyVarObject_HEAD_INIT(NULL, 0)
-	0,						   /*ob_size*/
 	"_suffix_tree.SuffixTreeNode", /*tp_name*/
 	sizeof(NodeObject),		   /*tp_basicsize*/
 	0,						   /*tp_itemsize*/
@@ -253,7 +252,7 @@ static struct PyModuleDef moduledef = {
   };
 
 PyMODINIT_FUNC
-PyInit__suffix_tree(void) 
+PyInit__suffix_tree(void)
 {
 	PyObject *m;
 
@@ -271,7 +270,9 @@ PyInit__suffix_tree(void)
 	Py_INCREF(&NodeType);
 
 	PyModule_AddObject(m, "SuffixTree",	(PyObject *)&SuffixTreeType);
-}
+	
+	return NULL;
+};
 
 
 
@@ -291,8 +292,8 @@ SuffixTree_new(PyTypeObject	*type, PyObject	*args, PyObject	*kwds)
 static int
 SuffixTree_init(SuffixTreeObject *self,	PyObject *args,	PyObject *kwds)
 {
-	PyUnicodeObject *string = NULL;
-	PyUnicodeObject *terminal = NULL;
+	PyObject *string = NULL;
+	PyObject *terminal = NULL;
 	static char *kwlist[] =	{"string", "terminal", NULL};
 
 	static wchar_t* s;
@@ -305,9 +306,9 @@ SuffixTree_init(SuffixTreeObject *self,	PyObject *args,	PyObject *kwds)
 		return -1;		/* rethrow exception */
 
 
-	if (!(string = (PyUnicodeObject *) PyTuple_GetItem(args,0)))	  return -1; /*	rethrow	*/
-	if (!(terminal = (PyUnicodeObject *) PyTuple_GetItem(args,1)))	  return -1; /*	rethrow	*/
-	input_string_size = PyUnicode_GetSize(string);
+	if (!(string = (PyObject *) PyTuple_GetItem(args,0)))	  return -1; /*	rethrow	*/
+	if (!(terminal = (PyObject *) PyTuple_GetItem(args,1)))	  return -1; /*	rethrow	*/
+	input_string_size = PyUnicode_GetLength(string);
 	s = malloc((input_string_size + 1) * sizeof(wchar_t));
 	if ((n = PyUnicode_AsWideChar(string,s,input_string_size)) < 0)   return -1; /*	rethrow	*/
 	/* n is	actually ignored here -- the size of string	s is wcslen(s) */
@@ -320,7 +321,7 @@ SuffixTree_init(SuffixTreeObject *self,	PyObject *args,	PyObject *kwds)
 	}
 
 	s[input_string_size] = '\0';
-	t[1] = '\0';
+	t[0] = '\0';
 
 	self->tree = st_make(s,*t);
 	free(s);
